@@ -55,7 +55,6 @@ int main() {
                     Leftmost_x = x_i;
                     Leftmost_y = y_i;
 //                    std::cout << "Leftmost:" << " "<< Leftmost_x << " " << Leftmost_y << std::endl;
-
                     roLastL = ro;
 
                 }
