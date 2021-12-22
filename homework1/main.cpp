@@ -24,7 +24,7 @@ int main() {
         while (!DotsFile.eof()) {
 
             DotsFile >> x_i >> y_i;
-            ro = fabs((A * x_i + B * y_i)) / sqrt(A*A + B*B);
+            ro = round(fabs((A * x_i + B * y_i)) / sqrt(A*A + B*B)*10000)/10000;
 //            std::cout << ro << std::endl;
 
             if (A*y_i <= B*x_i) {
