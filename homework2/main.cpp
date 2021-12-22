@@ -78,7 +78,7 @@ int main(int argc, char** argv){
         int n = 0;
         int xCollise;
 
-        std::string path = "homework2.txt";
+        std::string path = argv[1];
 
         std::vector<std::string> coords_in_string = FileReader(path);
         std::vector<double> coords = CoordsFinder(coords_in_string);
