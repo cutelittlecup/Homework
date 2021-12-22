@@ -4,10 +4,9 @@
 
 int main() {
 
-    double Rightmost_x, Rightmost_y;
-    double Leftmost_x, Leftmost_y;
-    double roLastR = 0;
-    double roLastL = 0;
+    double Rightmost_x = 0, Rightmost_y = 0;
+    double Leftmost_x = 0, Leftmost_y = 0;
+    double roLastR, roLastL = 0;
 
     std::string path = "in.txt";
     std::ifstream DotsFile;
