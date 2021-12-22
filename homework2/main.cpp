@@ -5,12 +5,12 @@
 #include <cmath>
 
 //считывание с файла всех координат в формате string
-std::vector<std::string> FileReader(const std::string& File_name){
+std::vector<std::string> FileReader(char** File_name){
     std::string str;
     std::vector<std::string> DotsInString;
     std::ifstream CoordsFile;
 
-    CoordsFile.open(File_name);
+    CoordsFile.open(File_name[1]);
 
     if (CoordsFile.is_open()) {
         while (!CoordsFile.eof()){
@@ -68,11 +68,10 @@ std::vector<double> y_Coords_Finder(std::vector<double> xCoords, double vx, doub
 }
 
 
-int main(int argc, char** argv){
+int main(int argc, char** argv) {
 
-    if (argc == 2) {
+    if (argc == 2){
         std::cout << "1st argument: " << argv[1] << std::endl;
-
         std::vector<double> xCollision;
 
         int n = 0;
@@ -218,6 +217,6 @@ int main(int argc, char** argv){
             }
         }
     } else{
-        std::cout << "there are too few or too many arguments" << std::endl;
+        std::cout << "there are too few or too many arguments"<< std::endl;
     }
 }
