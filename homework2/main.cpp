@@ -61,7 +61,7 @@ double recurs(std::vector<double> X, double n){
 std::vector<double> y_Coords_Finder(std::vector<double> xCoords, double vx, double vy, double h0, double g, int n, std::vector<double> xCollision){
     std::vector<double> yCoords;
     for(int i = 0; i < xCoords.size(); i++){
-        double y = h0 + pow(-1, n) * (xCoords[i] - recurs(xCollision, n)) * vy / vx - pow((xCoords[i] - recurs(xCollision,n)),2) * g / (2*pow(vx,2));
+        double y = h0 + pow(-1, n) * (xCoords[i] - recurs(xCollision, n)) * vy / vx - pow((xCoords[i] - recurs(xCollision,n)),2) * g / (2*vx*vx);
         yCoords.push_back(y);
     }
     return yCoords;
@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
         int iCollision = 0;
 
         //начальное направление движения
-        std::string LorR = "Right";
+        int LorR = 0;
 
         std::string path = argv[1];
 
@@ -104,25 +104,25 @@ int main(int argc, char** argv) {
             if(yCoords[i] < hCoords[i]){
                 iCollision = i;
                 xCollision.push_back(xCoords[i]);
-                LorR = "Left";
+                LorR = 1;
                 n++;
                 break;
             }
         }
-        if(LorR == "Right"){
+        if(LorR == 0){
             std::cout << "<" << xCoords.size() << ">";
             return 0;
         }
 
         // все последующие столкновения
         while(true){
-            if(LorR == "Left"){
-                yCoords = y_Coords_Finder(xCoords,vx,vy,h0,g,n,xCollision);
+            if(LorR == 1){
+                yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, n,xCollision);
                 for(int i = iCollision - 1; i >= 0; i--){
 
                     if (yCoords[i] <= hCoords[i]){
                         iCollision = i;
-                        LorR = "Right";
+                        LorR = 0;
                         n++;
                         xCollision.push_back(xCoords[i]);
                         break;
@@ -134,19 +134,19 @@ int main(int argc, char** argv) {
                     return 0;
                 }
 
-                if(LorR == "Left"){
+                if(LorR == 1){
                     std::cout << "<" << 0 << ">";
                     return 0;
                 }
             }
 
-            if(LorR == "Right"){
+            if(LorR == 0){
                 yCoords = y_Coords_Finder(xCoords,vx,vy,h0,g,n,xCollision);
                 for(int i = iCollision + 1 ; i < xCoords.size(); i++){
 
                     if (yCoords[i] <= hCoords[i]){
                         iCollision = i;
-                        LorR = "Left";
+                        LorR = 1;
                         n++;
                         xCollision.push_back(xCoords[i]);
                         break;
@@ -158,7 +158,7 @@ int main(int argc, char** argv) {
                     return 0;
                 }
 
-                if(LorR  == "Right"){
+                if(LorR  == 0){
                     std::cout << "<" << xCoords.size() << ">";
                     return 0;
                 }
