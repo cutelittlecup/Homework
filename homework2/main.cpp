@@ -5,12 +5,12 @@
 #include <cmath>
 
 //считывание с файла всех координат в формате string
-std::vector<std::string> FileReader(char** File_name){
+std::vector<std::string> FileReader(std::string File_name){
     std::string str;
     std::vector<std::string> DotsInString;
     std::ifstream CoordsFile;
 
-    CoordsFile.open(File_name[1]);
+    CoordsFile.open(File_name);
 
     if (CoordsFile.is_open()) {
         while (!CoordsFile.eof()){
@@ -71,7 +71,7 @@ std::vector<double> y_Coords_Finder(std::vector<double> xCoords, double vx, doub
 int main(int argc, char** argv) {
 
     if (argc == 2){
-        std::cout << "1st argument: " << argv[1] << std::endl;
+
         std::vector<double> xCollision;
 
         int n = 0;
@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
 
         if (coords.size() <= 1) {
 
-            std::cout << "<" << 0 << ">";
+            std::cout << 0;
 
         } else {
 
@@ -134,12 +134,12 @@ int main(int argc, char** argv) {
 
                 if (yCoords[i] < hCoords[i] && yCoords[i] < 0) {
 
-                    std::cout << "<" << i + 1 << ">";
+                    std::cout <<i + 1;
                     return 0;
                 }
 
                 if (yCoords[xCoords.size() - 1] > hCoords[xCoords.size() - 1]) {
-                    std::cout << "<" << xCoords.size() << ">";
+                    std::cout << xCoords.size();
                     return 0;
                 }
             }
@@ -176,13 +176,13 @@ int main(int argc, char** argv) {
                         }
                         if (yCoords[i] < hCoords[i] && yCoords[i] < 0) {
 
-                            std::cout << "<" << i << ">";
+                            std::cout << i;
 
                             return 0;
 
                         }
                         if (yCoords[i] > hCoords[0]) {
-                            std::cout << "<" << i << ">";
+                            std::cout << i;
                         }
 
                     }
