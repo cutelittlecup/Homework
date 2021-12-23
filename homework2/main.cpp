@@ -47,94 +47,92 @@ std::vector<double> x_and_h_coords(std::vector<double> array, int n) {
     return coords;
 }
 
-//рекурсия для учёта сдвига парабол
-double recurs(std::vector<double> X, double n){
-    if (n == 0) {
-        return 0;
+double summ_for_parab(std::vector<double> xCollision, std::vector<double> xCoords,double summ, int xCollise){
+    if (xCollision.size() == 0){
+        summ = 0;
+    } else {
+        summ = 2*xCoords[xCollise] - summ;
     }
-    else {
-        return 2 * X[n-1] - recurs(X, n - 1);
-    }
+    return summ;
 }
 
 //значения координаты материальной точки при координате x стенок
-std::vector<double> y_Coords_Finder(std::vector<double> xCoords, double vx, double vy, double h0, double g, int n, std::vector<double> xCollision){
+std::vector<double> y_Coords_Finder(std::vector<double> xCoords, double vx, double vy, double h0, double g, int n, int xCollise, double summ, std::vector<double> xCollision){
     std::vector<double> yCoords;
     for(int i = 0; i < xCoords.size(); i++){
-        double y = h0 + pow(-1, n) * (xCoords[i] - recurs(xCollision, n)) * vy / vx - pow((xCoords[i] - recurs(xCollision,n)),2) * g / (2 * vx * vx);
+        double y = h0 + pow(-1, n) * (xCoords[i] - summ_for_parab(xCollision, xCoords, summ, xCollise)) * vy / vx - pow((xCoords[i] - summ_for_parab(xCollision, xCoords, summ, xCollise)),2) * g / (2 * vx * vx);
         yCoords.push_back(y);
     }
     return yCoords;
 }
 
 
-int main(int argc, char** argv) {
+int main() { //int argc, char** argv
 
-    if (argc == 2) {
+//    if (argc == 2) {
 
-        std::vector<double> xCollision;
+    std::vector<double> xCollision;
 
-        int n = 0;
-        int xCollise = 0;
+    int n = 0;
+    int xCollise = 0;
+    double summ = 0;
 
-//        std::string path = "homework2.txt" ;
-        std::string path = argv[1] ;
+    std::string path = "homework2.txt";
+//        std::string path = argv[1] ;
 
-        std::vector<std::string> coords_in_string = FileReader(path);
-        std::vector<double> coords = CoordsFinder(coords_in_string);
+    std::vector<std::string> coords_in_string = FileReader(path);
+    std::vector<double> coords = CoordsFinder(coords_in_string);
 
-        double g = 9.81;
-        double h0 = coords[0];
-        double vx = coords[1];
-        double vy = coords[2];
+    double g = 9.81;
+    double h0 = coords[0];
+    double vx = coords[1];
+    double vy = coords[2];
 
 //        std::cout << "h0: " << h0 << std::endl;
 //        std::cout << "vx: " << vx << std::endl;
 //        std::cout << "vy: " << vy << std::endl;
 
-        //удаляем из массива с координатами константы
-        coords.erase(coords.begin() + 0, coords.begin() + 3);
+    //удаляем из массива с координатами константы
+    coords.erase(coords.begin() + 0, coords.begin() + 3);
 
 
-        if (coords.size() <= 1) {
+    if (coords.size() <= 1) {
 
-            std::cout << 0; // Нет стенок
+        std::cout << 0; // Нет стенок
 
-        } else {
+    } else {
 
-            //разделим на разные векторы координаты по х и у стенок
-            std::vector<double> hCoords = x_and_h_coords(coords, 1);
-            std::vector<double> xCoords = x_and_h_coords(coords, 0);
+        //разделим на разные векторы координаты по х и у стенок
+        std::vector<double> hCoords = x_and_h_coords(coords, 1);
+        std::vector<double> xCoords = x_and_h_coords(coords, 0);
 
 //            for (int i = 0; i < hCoords.size(); i++){
 //                std::cout << "xCoords: " << xCoords[i] << std::endl;
 //                std::cout << "hCoords: " << hCoords[i] << std::endl;
 //            }
 
-            std::vector<double> yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, n, xCollision);
+        std::vector<double> yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, n, xCollise, summ, xCollision);
 
 //            for (int i = 0; i < yCoords.size(); i++){
 //                std::cout << "yCoords: " << yCoords[i] << std::endl;
 //            }
 
-            //  П Р О В Е Р К А  Н А  П Е Р В О Е  С Т О Л К Н О В Е Н И Е
-            for (int i = 0; i < xCoords.size(); i++) {
+        //  П Р О В Е Р К А  Н А  П Е Р В О Е  С Т О Л К Н О В Е Н И Е
+        for (int i = 0; i < xCoords.size(); i++) {
 
-                if (yCoords[i] < hCoords[i] && yCoords[i] >= 0) {   // Сталкивается
-                    xCollision.push_back(xCoords[i]);
-                    xCollise = i;
+            if (yCoords[i] < hCoords[i] && yCoords[i] >= 0) {   // Сталкивается
+                xCollision.push_back(xCoords[i]);
+                xCollise = i;
+                n++;
+//                for (int i = 0; i < xCollision.size(); i++) {
+//                        std::cout << "xCollision: " << xCollision[i] << std::endl;
+//                    }
 //                    std::cout << "xCollise: " << xCollise << std::endl;
-                    n++;
                     break;
                 }
 
-//                for (int i = 0; i < xCollision.size(); i++){
-//                    std::cout << "xCollision: " << xCollision[i] << std::endl;
-//                }
-//                std::cout << "xCollise: " << xCollise << std::endl;
-
                 if (yCoords[i] < hCoords[i] && yCoords[i] < 0) {    // Не сталкивается
-                    std::cout << i;                                                         // ТУТ БЫЛО + 1
+                    std::cout << i;
                     return 0;
                 }
 
@@ -153,13 +151,13 @@ int main(int argc, char** argv) {
 
                 if (vx < 0) {   // Летит влево
 
-                    yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, n, xCollision);
+                    yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, n, xCollise, summ, xCollision);
 
 //                    for (int i = 0; i < yCoords.size(); i++){
 //                        std::cout << "yCoords: " << yCoords[i] << std::endl;
 //                    }
 
-                    if (xCoords.size() == 1){   // Стенка одна
+                    if (xCoords.size() == 1) {   // Стенка одна
                         std::cout << 0;
                         return 0;
                     }
@@ -198,7 +196,7 @@ int main(int argc, char** argv) {
 
                 if (vx > 0) {   // Летит вправо
 
-                    yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, n, xCollision);
+                    yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, n, xCollise, summ, xCollision);
 
                     for (int i = xCollise + 1; i > xCoords.size(); i++) {
 
@@ -228,7 +226,7 @@ int main(int argc, char** argv) {
 
         }
 
-    } else {
-        std::cout << "there are too few or too many arguments" << std::endl;
-    }
+//    } else {
+//        std::cout << "there are too few or too many arguments" << std::endl;
+//    }
 }
