@@ -57,10 +57,10 @@ double summ_for_parab(std::vector<double> xCollision, std::vector<double> xCoord
 }
 
 //значения координаты материальной точки при координате x стенок
-std::vector<double> y_Coords_Finder(std::vector<double> xCoords, double vx, double vy, double h0, double g, int n, int xCollise, double summ, std::vector<double> xCollision){
+std::vector<double> y_Coords_Finder(std::vector<double> xCoords, double vx, double vy, double h0, double g, int xCollise, double summ, std::vector<double> xCollision){
     std::vector<double> yCoords;
     for(int i = 0; i < xCoords.size(); i++){
-        double y = h0 + pow(-1, n) * (xCoords[i] - summ_for_parab(xCollision, xCoords, summ, xCollise)) * vy / vx - pow((xCoords[i] - summ_for_parab(xCollision, xCoords, summ, xCollise)),2) * g / (2 * vx * vx);
+        double y = h0 + (xCoords[i] - summ_for_parab(xCollision, xCoords, summ, xCollise)) * vy / vx - pow((xCoords[i] - summ_for_parab(xCollision, xCoords, summ, xCollise)),2) * g / (2 * vx * vx);
         yCoords.push_back(y);
     }
     return yCoords;
@@ -73,7 +73,6 @@ int main(int argc, char** argv) { //
 
         std::vector<double> xCollision;
 
-        int n = 0;
         int xCollise = 0;
         double summ = 0;
 
@@ -111,7 +110,7 @@ int main(int argc, char** argv) { //
 //                std::cout << "hCoords: " << hCoords[i] << std::endl;
 //            }
 
-            std::vector<double> yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, n, xCollise, summ, xCollision);
+            std::vector<double> yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, xCollise, summ, xCollision);
 
 //            for (int i = 0; i < yCoords.size(); i++){
 //                std::cout << "yCoords: " << yCoords[i] << std::endl;
@@ -123,7 +122,6 @@ int main(int argc, char** argv) { //
                 if (yCoords[i] < hCoords[i] && yCoords[i] >= 0) {   // Сталкивается
                     xCollision.push_back(xCoords[i]);
                     xCollise = i;
-                    n++;
 //                for (int i = 0; i < xCollision.size(); i++) {
 //                        std::cout << "xCollision: " << xCollision[i] << std::endl;
 //                    }
@@ -151,7 +149,7 @@ int main(int argc, char** argv) { //
 
                 if (vx < 0) {   // Летит влево
 
-                    yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, n, xCollise, summ, xCollision);
+                    yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, xCollise, summ, xCollision);
 
 //                    for (int i = 0; i < yCoords.size(); i++){
 //                        std::cout << "yCoords: " << yCoords[i] << std::endl;
@@ -168,7 +166,6 @@ int main(int argc, char** argv) { //
                         if (yCoords[i] < hCoords[i] && yCoords[i] >= 0) {      // Сталкивается со стенкой
                             xCollision.push_back(xCoords[i]);
                             xCollise = i;
-                            n++;
                             break;
                         }
 
@@ -196,14 +193,13 @@ int main(int argc, char** argv) { //
 
                 if (vx > 0) {   // Летит вправо
 
-                    yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, n, xCollise, summ, xCollision);
+                    yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, xCollise, summ, xCollision);
 
                     for (int i = xCollise + 1; i > xCoords.size(); i++) {
 
                         if (yCoords[i] < hCoords[i] && yCoords[i] >= 0) {   // Сталкивается
                             xCollision.push_back(xCoords[i]);
                             xCollise = i;
-                            n++;
                             break;
                         }
 
