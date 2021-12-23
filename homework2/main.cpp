@@ -60,24 +60,29 @@ double summ_for_parab(std::vector<double> xCollision, std::vector<double> xCoord
 std::vector<double> y_Coords_Finder(std::vector<double> xCoords, double vx, double vy, double h0, double g, int xCollise, double summ, std::vector<double> xCollision){
     std::vector<double> yCoords;
     for(int i = 0; i < xCoords.size(); i++){
-        double y = h0 + (xCoords[i] - summ_for_parab(xCollision, xCoords, summ, xCollise)) * vy / vx - pow((xCoords[i] - summ_for_parab(xCollision, xCoords, summ, xCollise)),2) * g / (2 * vx * vx);
-        yCoords.push_back(y);
+        if  (xCollision.size()%2) {
+            double y = h0 - (xCoords[i] - summ_for_parab(xCollision, xCoords, summ, xCollise)) * vy / vx - pow((xCoords[i] - summ_for_parab(xCollision, xCoords, summ, xCollise)),2) * g / (2 * vx * vx);
+            yCoords.push_back(y);
+        } else {
+            double y = h0 + (xCoords[i] - summ_for_parab(xCollision, xCoords, summ, xCollise)) * vy / vx - pow((xCoords[i] - summ_for_parab(xCollision, xCoords, summ, xCollise)),2) * g / (2 * vx * vx);
+            yCoords.push_back(y);
+        }
     }
     return yCoords;
 }
 
 
-int main(int argc, char** argv) { //
+int main() { //int argc, char** argv
 
-    if (argc == 2) {
+//    if (argc == 2) {
 
         std::vector<double> xCollision;
 
         int xCollise = 0;
         double summ = 0;
 
-//    std::string path = "homework2.txt";
-        std::string path = argv[1];
+    std::string path = "homework2.txt";
+//        std::string path = argv[1];
 
         std::vector<std::string> coords_in_string = FileReader(path);
         std::vector<double> coords = CoordsFinder(coords_in_string);
@@ -222,7 +227,7 @@ int main(int argc, char** argv) { //
 
         }
 
-    } else {
-        std::cout << "there are too few or too many arguments" << std::endl;
-    }
+//    } else {
+//        std::cout << "there are too few or too many arguments" << std::endl;
+//    }
 }
