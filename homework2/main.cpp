@@ -68,16 +68,16 @@ std::vector<double> y_Coords_Finder(std::vector<double> xCoords, double vx, doub
 }
 
 
-int main(int argc, char** argv) { //
+int main() { //int argc, char** argv
 
-    if (argc == 2) {
+//    if (argc == 2) {
 
         std::vector<double> xCollision;
 
         int n = 0;
         int xCollise = 0;
 
-        std::string path = argv[1] ; //"homework2.txt"
+        std::string path ="homework2.txt" ; //argv[1]
 
         std::vector<std::string> coords_in_string = FileReader(path);
         std::vector<double> coords = CoordsFinder(coords_in_string);
@@ -173,15 +173,15 @@ int main(int argc, char** argv) { //
 //                        std::cout << "xCollise: " << xCollise << std::endl;
 //                        std::cout << "n: " << n << std::endl;
 
-                        if (yCoords[i] < hCoords[i] && yCoords[i] < 0) {    // Не сталкивается
-                            std::cout << i - 1;
-                            return 0;
-
-                        }
-
                         if (yCoords[i] > hCoords[0]) {  // Перелетает первую стенку -> попадает в 0 зону
                             std::cout << 0;
                             return 0;
+                        }
+
+                        if (yCoords[i] < hCoords[i] && yCoords[i] < 0) {    // Не сталкивается
+                            std::cout << i;
+                            return 0;
+
                         }
 
                     }
@@ -221,7 +221,7 @@ int main(int argc, char** argv) { //
 
         }
 
-    } else {
-        std::cout << "there are too few or too many arguments" << std::endl;
-    }
+//    } else {
+//        std::cout << "there are too few or too many arguments" << std::endl;
+//    }
 }
