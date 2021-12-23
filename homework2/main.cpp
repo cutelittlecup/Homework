@@ -68,7 +68,7 @@ std::vector<double> y_Coords_Finder(std::vector<double> xCoords, double vx, doub
 }
 
 
-int main(int argc, char** argv) { //
+int main(int argc, char** argv) {
 
     if (argc == 2) {
 
@@ -159,9 +159,15 @@ int main(int argc, char** argv) { //
 //                        std::cout << "yCoords: " << yCoords[i] << std::endl;
 //                    }
 
-                    for (int i = xCollise; i >= 0; i--) {   // Сталкивается со стенкой
+                    if (xCoords.size() == 1){   // Стенка одна
+                        std::cout << 0;
+                        return 0;
+                    }
 
-                        if (yCoords[i] < hCoords[i] && yCoords[i] >= 0) {
+
+                    for (int i = xCollise - 1; i >= 0; i--) {
+
+                        if (yCoords[i] < hCoords[i] && yCoords[i] >= 0) {      // Сталкивается со стенкой
                             xCollision.push_back(xCoords[i]);
                             xCollise = i;
                             n++;
@@ -194,7 +200,7 @@ int main(int argc, char** argv) { //
 
                     yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, n, xCollision);
 
-                    for (int i = xCollise; i > xCoords.size(); i++) {
+                    for (int i = xCollise + 1; i > xCoords.size(); i++) {
 
                         if (yCoords[i] < hCoords[i] && yCoords[i] >= 0) {   // Сталкивается
                             xCollision.push_back(xCoords[i]);
