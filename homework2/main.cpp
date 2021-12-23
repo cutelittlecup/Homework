@@ -69,61 +69,61 @@ std::vector<double> y_Coords_Finder(std::vector<double> xCoords, double vx, doub
 
 int main(int argc, char** argv) { //
 
-//    if (argc == 2) {
+    if (argc == 2) {
 
-    std::vector<double> xCollision;
+        std::vector<double> xCollision;
 
-    int n = 0;
-    int xCollise = 0;
-    double summ = 0;
+        int n = 0;
+        int xCollise = 0;
+        double summ = 0;
 
 //    std::string path = "homework2.txt";
-    std::string path = argv[1] ;
+        std::string path = argv[1];
 
-    std::vector<std::string> coords_in_string = FileReader(path);
-    std::vector<double> coords = CoordsFinder(coords_in_string);
+        std::vector<std::string> coords_in_string = FileReader(path);
+        std::vector<double> coords = CoordsFinder(coords_in_string);
 
-    double g = 9.81;
-    double h0 = coords[0];
-    double vx = coords[1];
-    double vy = coords[2];
+        double g = 9.81;
+        double h0 = coords[0];
+        double vx = coords[1];
+        double vy = coords[2];
 
 //        std::cout << "h0: " << h0 << std::endl;
 //        std::cout << "vx: " << vx << std::endl;
 //        std::cout << "vy: " << vy << std::endl;
 
-    //удаляем из массива с координатами константы
-    coords.erase(coords.begin() + 0, coords.begin() + 3);
+        //удаляем из массива с координатами константы
+        coords.erase(coords.begin() + 0, coords.begin() + 3);
 
 
-    if (coords.size() <= 1) {
+        if (coords.size() <= 1) {
 
-        std::cout << 0; // Нет стенок
+            std::cout << 0; // Нет стенок
 
-    } else {
+        } else {
 
-        //разделим на разные векторы координаты по х и у стенок
-        std::vector<double> hCoords = x_and_h_coords(coords, 1);
-        std::vector<double> xCoords = x_and_h_coords(coords, 0);
+            //разделим на разные векторы координаты по х и у стенок
+            std::vector<double> hCoords = x_and_h_coords(coords, 1);
+            std::vector<double> xCoords = x_and_h_coords(coords, 0);
 
 //            for (int i = 0; i < hCoords.size(); i++){
 //                std::cout << "xCoords: " << xCoords[i] << std::endl;
 //                std::cout << "hCoords: " << hCoords[i] << std::endl;
 //            }
 
-        std::vector<double> yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, n, xCollise, summ, xCollision);
+            std::vector<double> yCoords = y_Coords_Finder(xCoords, vx, vy, h0, g, n, xCollise, summ, xCollision);
 
 //            for (int i = 0; i < yCoords.size(); i++){
 //                std::cout << "yCoords: " << yCoords[i] << std::endl;
 //            }
 
-        //  П Р О В Е Р К А  Н А  П Е Р В О Е  С Т О Л К Н О В Е Н И Е
-        for (int i = 0; i < xCoords.size(); i++) {
+            //  П Р О В Е Р К А  Н А  П Е Р В О Е  С Т О Л К Н О В Е Н И Е
+            for (int i = 0; i < xCoords.size(); i++) {
 
-            if (yCoords[i] < hCoords[i] && yCoords[i] >= 0) {   // Сталкивается
-                xCollision.push_back(xCoords[i]);
-                xCollise = i;
-                n++;
+                if (yCoords[i] < hCoords[i] && yCoords[i] >= 0) {   // Сталкивается
+                    xCollision.push_back(xCoords[i]);
+                    xCollise = i;
+                    n++;
 //                for (int i = 0; i < xCollision.size(); i++) {
 //                        std::cout << "xCollision: " << xCollision[i] << std::endl;
 //                    }
